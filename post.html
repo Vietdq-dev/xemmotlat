@@ -1,0 +1,76 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Post to TikTok – Xem Một Lát</title><link rel="stylesheet" href="style.css">
+<style>
+.card{background:#fff;border:1px solid #e6d9cc;border-radius:12px;padding:18px;margin:18px 0}
+.btn{display:inline-block;padding:10px 18px;border-radius:8px;border:0;font-size:1em;cursor:pointer;text-decoration:none}
+.btn-tt{background:#111;color:#fff!important}.btn-post{background:#fe2c55;color:#fff}
+.btn[disabled]{background:#ccc;color:#777;cursor:not-allowed}
+.creator{display:flex;align-items:center;gap:12px}.creator img{width:56px;height:56px;border-radius:50%;object-fit:cover;border:1px solid #ddd}
+label.row{display:flex;align-items:center;gap:8px;margin:6px 0}
+.field{margin:14px 0}.field>b{display:block;margin-bottom:4px}
+textarea,select{width:100%;box-sizing:border-box;padding:8px;font:inherit;border:1px solid #ccc;border-radius:6px}
+video{max-width:240px;max-height:420px;background:#000;border-radius:8px;display:block;margin-top:8px}
+.note{font-size:.9em;color:#555}.warn{color:#b0403a}.hint{font-size:.85em;color:#6b4f8f;margin-left:26px}
+.banner{background:#fff3cd;border:1px solid #e8d48a;border-radius:8px;padding:10px 12px;font-size:.92em}
+#status{white-space:pre-line;font-family:ui-monospace,monospace;font-size:.9em;background:#f6f1ff;border-radius:6px;padding:10px;min-height:1.5em}
+.sub{margin-left:26px}
+[hidden]{display:none!important}
+</style></head><body>
+<nav><a href="index.html">Trang chủ</a><a href="post.html">Post to TikTok</a><a href="terms.html">Điều khoản</a><a href="privacy.html">Quyền riêng tư</a></nav>
+<h1>Post to TikTok</h1>
+<p class="banner"><b>About this tool:</b> Xem Một Lát uploads the owner's own short vertical videos to the owner's own TikTok account (@xemmotlat). The videos are <b>AI-generated and fictional</b> stories/clips and are labeled as AI-generated on TikTok. Nothing is posted to any other account. This page is a static demo of the posting screen: no secrets are stored here, and the actual upload is done by the owner's backend.</p>
+
+<section class="card" id="step1">
+<h2>Step 1 – Connect your TikTok account</h2>
+<p>Log in with TikTok and authorize the scopes <code>user.info.basic</code>, <code>video.publish</code>, <code>video.upload</code>.</p>
+<p><a class="btn btn-tt" id="loginBtn" href="https://www.tiktok.com/v2/auth/authorize/?client_key=sbaw4p1ni1upue41wc&amp;scope=user.info.basic,video.publish,video.upload&amp;response_type=code&amp;redirect_uri=https%3A%2F%2Fvietdq-dev.github.io%2Fxemmotlat%2Fcallback.html&amp;state=xml_demo">Login with TikTok</a></p>
+<p class="note">After authorizing you are returned to <code>callback.html</code>. The authorization code is exchanged for a token on the owner's backend only.</p>
+</section>
+
+<section class="card" id="step2">
+<h2>Step 2 – Post to TikTok</h2>
+<div class="creator"><img src="avatar.jpg" alt="Creator avatar"><div><b id="nickname">Xem Một Lát</b><br><span class="note" id="username">@xemmotlat</span></div></div>
+<p class="note">Posting to the account above (creator info from TikTok <code>creator_info</code>; demo values shown). Max video duration for this account: <span id="maxDur">600</span>s.</p>
+<p class="warn" id="capMsg" hidden>This account can't make more posts right now. Please try again later.</p>
+
+<div class="field"><b>Video</b>
+<input type="file" id="video" accept="video/mp4,video/quicktime,video/webm">
+<video id="preview" controls playsinline hidden></video>
+<div class="note warn" id="durMsg"></div></div>
+
+<div class="field"><b><label for="title">Title / caption</label></b>
+<textarea id="title" rows="3" maxlength="2200">Truyện ngắn: một lát thôi #AIgenerated #xemmotlat</textarea>
+<span class="note">All text, including hashtags, is editable before posting.</span></div>
+
+<div class="field"><b><label for="privacy">Who can view this video</label></b>
+<select id="privacy" required>
+<option value="" selected disabled>Select privacy…</option>
+<option value="PUBLIC_TO_EVERYONE">Public (Everyone)</option>
+<option value="MUTUAL_FOLLOW_FRIENDS">Friends</option>
+<option value="SELF_ONLY" id="optSelf">Only me</option>
+</select>
+<span class="note" id="privNote"></span></div>
+
+<div class="field"><b>Allow users to</b>
+<label class="row"><input type="checkbox" id="allowComment"> Comment</label>
+<label class="row"><input type="checkbox" id="allowDuet"> Duet</label>
+<label class="row"><input type="checkbox" id="allowStitch"> Stitch</label>
+<span class="note">Off by default. Options disabled in your TikTok settings are greyed out.</span></div>
+
+<div class="field"><b>Content disclosure</b>
+<label class="row"><input type="checkbox" id="aigc" checked> AI-generated content <span class="note">(label this video as AI-generated)</span></label>
+<label class="row"><input type="checkbox" id="commercial"> Disclose video content <span class="note">— this content promotes yourself, a brand, product or service</span></label>
+<div id="commercialOpts" class="sub" hidden>
+<label class="row"><input type="checkbox" id="yourBrand"> Your brand <span class="note">— you are promoting yourself or your own business</span></label>
+<label class="row" id="brandedLabel"><input type="checkbox" id="branded"> Branded content <span class="note">— you are promoting another brand or a third party</span></label>
+<div class="hint" id="labelMsg"></div>
+</div></div>
+
+<p id="consent">By posting, you agree to TikTok's <a href="https://www.tiktok.com/legal/page/global/music-usage-confirmation/en" target="_blank" rel="noopener">Music Usage Confirmation</a>.</p>
+
+<span id="postWrap"><button class="btn btn-post" id="postBtn" disabled>Post</button></span>
+<p class="note">After publishing, it may take a few minutes for your video to be processed and appear on your TikTok profile.</p>
+<div id="status" aria-live="polite"></div>
+</section>
+<footer>&copy; 2026 Xem Một Lát · <a href="terms.html">Terms</a> · <a href="privacy.html">Privacy</a></footer>
+<script src="post.js"></script>
+</body></html>
