@@ -17,23 +17,23 @@ video{max-width:240px;max-height:420px;background:#000;border-radius:8px;display
 </style></head><body>
 <nav><a href="index.html">Trang chủ</a><a href="post.html">Post to TikTok</a><a href="terms.html">Điều khoản</a><a href="privacy.html">Quyền riêng tư</a></nav>
 <h1>Post to TikTok</h1>
-<p class="banner"><b>About this tool:</b> Xem Một Lát uploads the owner's own short vertical videos to the owner's own TikTok account (@xemmotlat). The videos are <b>AI-generated and fictional</b> stories/clips and are labeled as AI-generated on TikTok. Nothing is posted to any other account. This page is a static demo of the posting screen: no secrets are stored here, and the actual upload is done by the owner's backend.</p>
+<p class="banner"><b>About this tool:</b> Xem Một Lát lets a creator post their own short vertical videos to <b>their own</b> TikTok account. Log in with TikTok, review the video and caption, choose who can view it, then press Post. The video is posted only to the TikTok account you logged in with. The owner's videos are <b>AI-generated</b> stories/clips and are labeled as AI-generated on TikTok.</p>
 
 <section class="card" id="step1">
 <h2>Step 1 – Connect your TikTok account</h2>
 <p>Log in with TikTok and authorize the scopes <code>user.info.basic</code>, <code>video.publish</code>, <code>video.upload</code>.</p>
-<p><a class="btn btn-tt" id="loginBtn" href="https://www.tiktok.com/v2/auth/authorize/?client_key=sbaw4p1ni1upue41wc&amp;scope=user.info.basic,video.publish,video.upload&amp;response_type=code&amp;redirect_uri=https%3A%2F%2Fvietdq-dev.github.io%2Fxemmotlat%2Fcallback.html&amp;state=xml_demo">Login with TikTok</a></p>
-<p class="note">After authorizing you are returned to <code>callback.html</code>. The authorization code is exchanged for a token on the owner's backend only.</p>
+<p><button class="btn btn-tt" id="loginBtn">Login with TikTok</button> <button class="btn" id="logoutBtn" hidden>Log out</button></p>
+<p class="note" id="authMsg"></p>
 </section>
 
-<section class="card" id="step2">
+<section class="card" id="step2" hidden>
 <h2>Step 2 – Post to TikTok</h2>
-<div class="creator"><img src="avatar.jpg" alt="Creator avatar"><div><b id="nickname">Xem Một Lát</b><br><span class="note" id="username">@xemmotlat</span></div></div>
-<p class="note">Posting to the account above (creator info from TikTok <code>creator_info</code>; demo values shown). Max video duration for this account: <span id="maxDur">600</span>s.</p>
+<div class="creator"><img id="avatar" alt="Creator avatar"><div><b id="nickname"></b><br><span class="note" id="username"></span></div></div>
+<p class="note">Posting to the account above (from TikTok <code>creator_info</code>). Max video duration for this account: <span id="maxDur"></span>s.</p>
 <p class="warn" id="capMsg" hidden>This account can't make more posts right now. Please try again later.</p>
 
 <div class="field"><b>Video</b>
-<input type="file" id="video" accept="video/mp4,video/quicktime,video/webm">
+<input type="file" id="video" accept="video/mp4,video/quicktime,video/webm"> <span class="note">(max 95 MB)</span>
 <video id="preview" controls playsinline hidden></video>
 <div class="note warn" id="durMsg"></div></div>
 
@@ -44,9 +44,6 @@ video{max-width:240px;max-height:420px;background:#000;border-radius:8px;display
 <div class="field"><b><label for="privacy">Who can view this video</label></b>
 <select id="privacy" required>
 <option value="" selected disabled>Select privacy…</option>
-<option value="PUBLIC_TO_EVERYONE">Public (Everyone)</option>
-<option value="MUTUAL_FOLLOW_FRIENDS">Friends</option>
-<option value="SELF_ONLY" id="optSelf">Only me</option>
 </select>
 <span class="note" id="privNote"></span></div>
 
@@ -54,7 +51,7 @@ video{max-width:240px;max-height:420px;background:#000;border-radius:8px;display
 <label class="row"><input type="checkbox" id="allowComment"> Comment</label>
 <label class="row"><input type="checkbox" id="allowDuet"> Duet</label>
 <label class="row"><input type="checkbox" id="allowStitch"> Stitch</label>
-<span class="note">Off by default. Options disabled in your TikTok settings are greyed out.</span></div>
+<span class="note">Off by default. Options turned off in your TikTok settings are greyed out.</span></div>
 
 <div class="field"><b>Content disclosure</b>
 <label class="row"><input type="checkbox" id="aigc" checked> AI-generated content <span class="note">(label this video as AI-generated)</span></label>
