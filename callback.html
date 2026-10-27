@@ -1,0 +1,12 @@
+<!doctype html><html lang="vi"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Xem Một Lát - Kết nối TikTok</title><link rel="stylesheet" href="style.css"></head><body>
+<nav><a href="index.html">Trang chủ</a><a href="terms.html">Điều khoản</a><a href="privacy.html">Quyền riêng tư</a></nav>
+<h1>Kết nối TikTok</h1>
+<p id="msg">Đang xử lý...</p>
+<script>
+var p=new URLSearchParams(location.search);
+var m=document.getElementById('msg');
+if(p.get('code')){m.textContent='Đã kết nối. Mã xác thực (chỉ dùng một lần, không chia sẻ cho ai ngoài trợ lý của bạn): '+p.get('code');}
+else if(p.get('error')){m.textContent='Kết nối bị hủy hoặc lỗi: '+p.get('error');}
+else{m.textContent='Trang này nhận kết quả đăng nhập TikTok của chủ kênh.';}
+</script>
+<footer>&copy; 2026 Xem Một Lát</footer></body></html>
